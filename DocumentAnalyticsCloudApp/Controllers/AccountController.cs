@@ -6,6 +6,7 @@ namespace DocumentAnalyticsCloudApp.Controllers
     /*
      * AccountController manages user authentication actions including registration, login, and logout using ASP.NET Core Identity.
      * 
+     * 
      * -- Developed By: Ez-Aldeen Asqool (E.A Developer) --
      */
     public class AccountController : Controller
