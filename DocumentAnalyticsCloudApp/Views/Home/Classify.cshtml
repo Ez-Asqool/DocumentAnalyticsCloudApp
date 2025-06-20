@@ -1,0 +1,64 @@
+﻿@using DocumentAnalyticsCloudApp.ViewModels
+@model Dictionary<string, List<DocumentModel>>
+@{
+    var stats = ViewBag.DashboardStats as DashboardViewModel;
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Total Documents:</h5>
+            <p class="fs-4">@stats?.TotalDocuments</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Total Storage Used:</h5>
+            <p class="fs-4">@stats?.TotalSizeInMB</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Total Classification Time (ms):</h5>
+            <p class="fs-4">@stats?.TotalClassificationTimeMs</p>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="mb-3">Documents by Classification</h2>
+
+@foreach (var group in Model)
+{
+    <h4 class="mt-4 bg-light p-2">@group.Key</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Preview</th>
+                <th>Classification Time (ms)</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doc in group.Value)
+            {
+                <tr>
+                    <td>@doc.Title</td>
+                    <td>@Html.Raw(doc.Content)</td>
+                    <td>@Math.Round(doc.ClassificationTime, 2)</td>
+                    <td><a href="@doc.Url" target="_blank">Open</a></td>
+                </tr>
+            }
+
+            
+        </tbody>
+    </table>
+}

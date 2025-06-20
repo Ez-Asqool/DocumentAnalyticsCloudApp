@@ -1,0 +1,73 @@
+﻿@using DocumentAnalyticsCloudApp.ViewModels
+@model List<DocumentModel>
+@{
+    var stats = ViewBag.DashboardStats as DashboardViewModel;
+    var sort = ViewBag.Sort as string;
+    var q = ViewBag.Query as string;
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Total Documents:</h5>
+            <p class="fs-4">@stats?.TotalDocuments</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Total Storage Used:</h5>
+            <p class="fs-4">@stats?.TotalSizeInMB MB</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-light p-3">
+            <h5>Search Time:</h5>
+            <p class="fs-4">@stats?.SearchExecutionMs ms</p>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="mb-3">Document Explorer</h2>
+
+<form method="get" class="mb-4 d-flex align-items-center gap-3">
+    <input type="text" name="q" class="form-control w-25" placeholder="Search..." value="@q" />
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a href="@Url.Action("Classify", "Home")" class="btn btn-warning">Classify</a>
+    <a href="@Url.Action("Sort", "Home")" class="btn btn-success">Sort</a>
+</form>
+
+
+
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Preview</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doc in Model)
+        {
+            <tr>
+                <td>@doc.Title</td>
+                <td>@Html.Raw(doc.Content)</td>
+                <td>
+                    <a href="@doc.Url" target="_blank" class="btn  btn-outline-primary me-1">Open</a>
+                    <a asp-action="Update" asp-route-id="@doc.Id" class="btn  btn-outline-warning me-1">Update</a>
+                    <a asp-action="Delete" asp-route-id="@doc.Id"
+                       class="btn  btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to delete this file?')">Delete</a>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>

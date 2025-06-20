@@ -1,0 +1,22 @@
+﻿@model IFormFile
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h2>Upload Document</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form asp-controller="Home" asp-action="Upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Select PDF or Word Document</label>
+        <input type="file" name="uploadedFile" class="form-control" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Upload</button>
+</form>
