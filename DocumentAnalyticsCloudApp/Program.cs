@@ -17,14 +17,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        //options.ExpireTimeSpan = TimeSpan.FromHours(6); 
+        //options.SlidingExpiration = true; 
+        //options.Cookie.HttpOnly = true;
+        //options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; 
+        //options.Cookie.SameSite = SameSiteMode.Lax;
+    });
 
-    options.ExpireTimeSpan = TimeSpan.FromHours(6);      
-    options.SlidingExpiration = true;                    
-});
+//builder.Services.AddAuthorization();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -59,6 +64,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

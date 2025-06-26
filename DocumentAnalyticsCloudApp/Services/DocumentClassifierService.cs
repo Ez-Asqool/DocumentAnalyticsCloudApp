@@ -51,7 +51,26 @@
                 { "Computer Science > Software Engineering > Testing", new() { "unit test", "integration test", "tdd", "mock", "xunit", "jest" } }
             };
         }
+        public string Classify(string content)
+        {
+            var scores = new Dictionary<string, int>();
 
+            foreach (var rule in _rules)
+            {
+                int count = rule.Value.Count(keyword =>
+                    content.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+
+                if (count > 0)
+                    scores[rule.Key] = count;
+            }
+
+            if (scores.Count == 0)
+                return "Unclassified";
+
+            var bestMatch = scores.OrderByDescending(kvp => kvp.Value).First();
+            return bestMatch.Key;
+        }
+        /*
         public string Classify(string content)
         {
             foreach (var rule in _rules)
@@ -65,5 +84,6 @@
 
             return "Unclassified";
         }
+        */
     }
 }
